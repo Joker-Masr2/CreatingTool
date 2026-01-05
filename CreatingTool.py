@@ -46,6 +46,7 @@ def check_and_update():
 
 def restart():
     os.execv(sys.executable, [sys.executable] + sys.argv)
+check_and_update()
 #### COLORS
 w = "\033[1;97m"
 g = "\033[1;92m"
@@ -227,8 +228,6 @@ def run_all():
 #### MENU
 def menu():
     while True:
-    	check_and_update()
-#        os.system("clear")
         clear_after_theme()
 #        theme()
         print(f"""
