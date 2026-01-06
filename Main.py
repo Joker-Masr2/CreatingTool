@@ -263,7 +263,7 @@ def run_all():
 #### MENU
 def menu():
     while True:
-		fix_me()
+        fix_me()
         clear_after_theme()
 #        theme()
         print(f"""
