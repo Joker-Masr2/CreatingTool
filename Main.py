@@ -52,8 +52,8 @@ def fix_me():
         api = f"https://api.github.com/repos/{REPO}/releases/latest"
         data = requests.get(api, timeout=5).json()
         latest = data["tag_name"].lstrip("v")
-
-        if version.parse(latest) <= version.parse(__version__):
+		
+        if version.parse(latest) == version.parse(__version__):
             return
 
         print(f"[{g}+{w}]{g} Update found:{p} {latest}{l}")
@@ -83,7 +83,7 @@ def fix_me():
         os.remove("update.zip")
 
         restart()
-
+fix_me()
     except Exception as e:
         print(f"[!] Update error: {e}")
 
@@ -263,7 +263,7 @@ def run_all():
 #### MENU
 def menu():
     while True:
-        fix_me()
+  #      fix_me()
         clear_after_theme()
 #        theme()
         print(f"""
