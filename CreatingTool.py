@@ -4,7 +4,7 @@ import time, random, os, platform, urllib.request, zipfile, threading, sys, asyn
 from packaging import version
 import requests, shutil
 ##update
-__version__ = "2.1"
+__version__ = "2.2"
 REPO = "Joker-Masr2/CreatingTool"
 
 def check_and_update():
