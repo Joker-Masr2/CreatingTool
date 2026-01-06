@@ -1,8 +1,48 @@
-from pyrogram import Client
-from pyrogram.errors import FloodWait
-import time, random, os, platform, urllib.request, zipfile, threading, sys, asyncio
-from packaging import version
-import requests, shutil
+# Imports
+import sys, os, subprocess
+
+try:
+    from pyrogram import Client
+    from pyrogram.errors import FloodWait
+except (ModuleNotFoundError, ImportError):
+    print("[!] Installing pyrogram...")
+    subprocess.check_call([
+        sys.executable, "-m", "pip", "install", "pyrogram", "tgcrypto"
+    ])
+    from pyrogram import Client
+    from pyrogram.errors import FloodWait
+
+
+try:
+    from packaging import version
+except (ModuleNotFoundError, ImportError):
+    print("[!] Installing packaging...")
+    subprocess.check_call([
+        sys.executable, "-m", "pip", "install", "packaging"
+    ])
+    from packaging import version
+
+
+try:
+    import requests
+except (ModuleNotFoundError, ImportError):
+    print("[!] Installing requests...")
+    subprocess.check_call([
+        sys.executable, "-m", "pip", "install", "requests"
+    ])
+    import requests
+import time, random, platform, urllib.request, zipfile, threading, asyncio, shutil
+
+#### COLORS
+w = "\033[1;97m"
+g = "\033[1;92m"
+y = "\033[1;93m"
+z = "\033[1;96m"
+r = "\033[1;91m"
+b = "\033[1;94m"
+p = "\033[1;91m\033[3m"
+l = "\033[1;97m\033[0m"
+
 ##update
 __version__ = "2.2"
 REPO = "Joker-Masr2/CreatingTool"
@@ -16,7 +56,10 @@ def check_and_update():
         if version.parse(latest) <= version.parse(__version__):
             return
 
-        print(f"[+] Update found: {latest}")
+        print(f"[{g}+{w}]{g} Update found:{p} {latest}{l}")
+        time.sleep(.3)
+        print(f"[{y}+{w}] {y}Installing...")
+        time.sleep(2)
 
         zip_url = f"https://github.com/{REPO}/archive/refs/tags/v{latest}.zip"
         r = requests.get(zip_url, stream=True)
@@ -47,15 +90,7 @@ def check_and_update():
 def restart():
     os.execv(sys.executable, [sys.executable] + sys.argv)
 check_and_update()
-#### COLORS
-w = "\033[1;97m"
-g = "\033[1;92m"
-y = "\033[1;93m"
-z = "\033[1;96m"
-r = "\033[1;91m"
-b = "\033[1;94m"
-p = "\033[1;91m\033[3m"
-l = "\033[1;97m\033[0m"
+
 # Good
 def clear_after_theme(theme_lines=14):
     print(f"\033[{theme_lines+1};0H", end="")
