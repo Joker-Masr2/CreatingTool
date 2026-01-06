@@ -1,4 +1,4 @@
-
+![Tool Screenshot](banner.jpg)
 # CreatingTool - Telegram Automation Tool
 
 **Version:** 2.3 
