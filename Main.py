@@ -44,10 +44,10 @@ p = "\033[1;91m\033[3m"
 l = "\033[1;97m\033[0m"
 
 ##update
-__version__ = "2.4"
+__version__ = "2.3"
 REPO = "Joker-Masr2/CreatingTool"
 
-def check_and_update():
+def fix_me():
     try:
         api = f"https://api.github.com/repos/{REPO}/releases/latest"
         data = requests.get(api, timeout=5).json()
@@ -89,7 +89,7 @@ def check_and_update():
 
 def restart():
     os.execv(sys.executable, [sys.executable] + sys.argv)
-check_and_update()
+
 
 # Good
 def clear_after_theme(theme_lines=14):
@@ -263,6 +263,7 @@ def run_all():
 #### MENU
 def menu():
     while True:
+		fix_me()
         clear_after_theme()
 #        theme()
         print(f"""
