@@ -27,23 +27,25 @@ CreatingTool is a Python-based Telegram automation tool that allows you to creat
 2. Install required libraries:
    ```bash
    pip install -r requirements.txt
-Or let the tool install missing libraries automatically.
-Clone the repository or download the zip: git clone https://github.com/Joker-Masr2/CreatingTool.git
-cd CreatingTool
+3. Or let the tool install missing libraries automatically.
+Clone the repository or download the zip:
+   ```bash
+   git clone https://github.com/Joker-Masr2/CreatingTool cd /CreatingTool
 
 ---
 
 ## Usage :
-Run the script ```bash
-python3 Main.py```
+1. Run the script:
+   ```bash
+   python3 Main.py
 
 ----
 ## Menu options:
-Add account – add a new Telegram account.how accounts – list all accounts.
-Run on one – run the tool on a single account.
-Run on all – run the tool on all accounts.
-Delete account – remove an account safely.
-Exit – close the tool.
+1. Add account – add a new Telegram account.how accounts – list all accounts.
+2. Run on one – run the tool on a single account.
+3. Run on all – run the tool on all accounts.
+4. Delete account – remove an account safely.
+5. Exit – close the tool.
 
 ---
 
