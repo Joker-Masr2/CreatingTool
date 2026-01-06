@@ -56,5 +56,4 @@ The tool sends messages and creates groups with delays to comply with Telegram l
 ---
 
 ### Contact
-Developer: Dark Storm On Telegram
 Telegram : https://t.me/STO9RM
