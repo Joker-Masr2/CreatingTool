@@ -44,7 +44,7 @@ p = "\033[1;91m\033[3m"
 l = "\033[1;97m\033[0m"
 
 ##update
-__version__ = "2.2"
+__version__ = "2.3"
 REPO = "Joker-Masr2/CreatingTool"
 
 def check_and_update():
