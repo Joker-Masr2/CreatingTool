@@ -83,14 +83,14 @@ def fix_me():
         os.remove("update.zip")
 
         restart()
-fix_me()
+
     except Exception as e:
         print(f"[!] Update error: {e}")
 
 def restart():
     os.execv(sys.executable, [sys.executable] + sys.argv)
 
-
+fix_me()
 # Good
 def clear_after_theme(theme_lines=14):
     print(f"\033[{theme_lines+1};0H", end="")
