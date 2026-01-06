@@ -1,7 +1,7 @@
 
 # CreatingTool - Telegram Automation Tool
 
-**Version:** 2.2  
+**Version:** 2.3 
 **Developer:** Dark Storm
 
 ---
@@ -33,14 +33,13 @@ cd CreatingTool
 
 ---
 
-### Usage
-Run the main script: ```bash
-python3 main.py```
----
+## Usage :
+Run the script ```bash
+python3 Main.py```
 
-### Menu options:
-Add account – add a new Telegram account.
-Show accounts – list all accounts.
+----
+## Menu options:
+Add account – add a new Telegram account.how accounts – list all accounts.
 Run on one – run the tool on a single account.
 Run on all – run the tool on all accounts.
 Delete account – remove an account safely.
@@ -56,4 +55,4 @@ The tool sends messages and creates groups with delays to comply with Telegram l
 
 ### Contact
 Developer: Dark Storm
-Telegram : https//t.me/STO9RM
+TeTelegram : https//t.me/STO9RM
