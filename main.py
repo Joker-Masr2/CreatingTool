@@ -96,10 +96,10 @@ def run_tool(session):
                 try:
                     ch = app.create_supergroup(f"{T}_{created+1}")
                     created += 1
-                    print(f"[{y}+{w}]{g} {session} ➜ {T}_{created}{l}")
-
-                    time.sleep(1)
-                    app.get_chat(ch.id)
+                    if created % GROUPS_BEFORE_WAIT == 0:
+                        print(f"[{y}+{w}]{g} {session} ➜ {T}_{created}{l}")
+                        time.sleep(1)
+                        app.get_chat(ch.id)
 
                     for _ in range(10):
                         try:
