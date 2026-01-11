@@ -43,9 +43,11 @@ r = "\033[1;91m"
 b = "\033[1;94m"
 p = "\033[1;91m\033[3m"
 l = "\033[1;97m\033[0m"
-
+#### BOT CONFIG
+api_id = 7960533
+api_hash = "e63bd5f68ee3666ebd05b04c6387b0bb"
 ##update
-__version__ = "2.5"
+__version__ = "2.6"
 REPO = "Joker-Masr2/CreatingTool"
 
 def fix_me():
