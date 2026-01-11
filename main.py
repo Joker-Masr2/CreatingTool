@@ -31,9 +31,7 @@ os.makedirs(SESS_DIR, exist_ok=True)
 
 
 
-#### BOT CONFIG
-api_id = 7960533
-api_hash = "e63bd5f68ee3666ebd05b04c6387b0bb"
+
 
 C = 50
 T = "DS"
