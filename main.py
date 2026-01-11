@@ -69,11 +69,11 @@ os.makedirs(SESS_DIR, exist_ok=True)
 api_id = 7960533
 api_hash = "e63bd5f68ee3666ebd05b04c6387b0bb"
 
-C = 2
+C = 50
 T = "DS"
 DM = 1
-GROUPS_BEFORE_WAIT = 1
-WAIT_TIME = 10
+GROUPS_BEFORE_WAIT = 10
+WAIT_TIME = 600
 
 MSG = [
     "هلو 🙋‍♂️","هلا والله 🤍","عايز فلوسسس",
