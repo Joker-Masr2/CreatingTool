@@ -1,6 +1,38 @@
-import time
-from pyrogram.errors import FloodWait
-import os
+
+# Imports
+import sys, os, subprocess
+from assets.features import *
+try:
+    from pyrogram import Client
+    from pyrogram.errors import FloodWait
+except (ModuleNotFoundError, ImportError):
+    print("[!] Installing pyrogram...")
+    subprocess.check_call([
+        sys.executable, "-m", "pip", "install", "pyrogram", "tgcrypto"
+    ])
+    from pyrogram import Client
+    from pyrogram.errors import FloodWait
+
+
+try:
+    from packaging import version
+except (ModuleNotFoundError, ImportError):
+    print("[!] Installing packaging...")
+    subprocess.check_call([
+        sys.executable, "-m", "pip", "install", "packaging"
+    ])
+    from packaging import version
+
+
+try:
+    import requests
+except (ModuleNotFoundError, ImportError):
+    print("[!] Installing requests...")
+    subprocess.check_call([
+        sys.executable, "-m", "pip", "install", "requests"
+    ])
+    import requests
+import time, random, platform, urllib.request, zipfile, threading, asyncio, shutil
 
 #### COLORS
 w = "\033[1;97m"
