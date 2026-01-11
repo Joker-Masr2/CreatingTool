@@ -2,7 +2,7 @@
 from assets.features import *
 ## update
 fix_me()
-#fix_me()
+
 # Good
 def clear_after_theme(theme_lines=14):
     print(f"\033[{theme_lines+1};0H", end="")
