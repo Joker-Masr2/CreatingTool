@@ -1,42 +1,8 @@
 # Imports
-import sys, os, subprocess
 from assets.features import *
-try:
-    from pyrogram import Client
-    from pyrogram.errors import FloodWait
-except (ModuleNotFoundError, ImportError):
-    print("[!] Installing pyrogram...")
-    subprocess.check_call([
-        sys.executable, "-m", "pip", "install", "pyrogram", "tgcrypto"
-    ])
-    from pyrogram import Client
-    from pyrogram.errors import FloodWait
-
-
-try:
-    from packaging import version
-except (ModuleNotFoundError, ImportError):
-    print("[!] Installing packaging...")
-    subprocess.check_call([
-        sys.executable, "-m", "pip", "install", "packaging"
-    ])
-    from packaging import version
-
-
-try:
-    import requests
-except (ModuleNotFoundError, ImportError):
-    print("[!] Installing requests...")
-    subprocess.check_call([
-        sys.executable, "-m", "pip", "install", "requests"
-    ])
-    import requests
-import time, random, platform, urllib.request, zipfile, threading, asyncio, shutil
-
-
-
 ## update
 fix_me()
+#fix_me()
 # Good
 def clear_after_theme(theme_lines=14):
     print(f"\033[{theme_lines+1};0H", end="")
@@ -240,6 +206,6 @@ try:
     menu()  
 except KeyboardInterrupt:
     STOP = True  
-    print(f"\n{r}⛔ Script stopped safely{l}")
+    print(f"\n{r}Script stopped safely{l}")
     time.sleep(1)
     sys.exit(0)
