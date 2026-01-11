@@ -1,4 +1,4 @@
-![Tool Screenshot](banner.jpg)
+![Tool Screenshot](/assets/banner.jpg)
 # CreatingTool - Telegram Automation Tool
 
 **Version:** 2.3 
