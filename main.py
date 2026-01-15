@@ -19,7 +19,7 @@ def countdown(seconds):
         time.sleep(1)
         seconds -= 1
     print(f"\r{g} Resuming work...  {w}      ")
-
+fix_me()
 #### SYSTEM
 SYSTEM = platform.system()
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -244,7 +244,6 @@ def menu():
 #### START
 try:
     if __name__ == "__main__":
-        fix_me()
         menu()  
 except KeyboardInterrupt:
     print(f"\n{r}Script stopped safely{l}")
