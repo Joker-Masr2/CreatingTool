@@ -47,7 +47,7 @@ l = "\033[1;97m\033[0m"
 api_id = 7960533
 api_hash = "e63bd5f68ee3666ebd05b04c6387b0bb"
 ##update
-__version__ = "2.7"
+__version__ = "2.9"
 REPO = "Joker-Masr2/CreatingTool"
 
 def fix_me():
