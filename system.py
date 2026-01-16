@@ -8,3 +8,4 @@ os.makedirs(SESS_DIR, exist_ok=True)
 
 started_printed = False
 start_lock = threading.Lock()
+SINGLE_MODE = True

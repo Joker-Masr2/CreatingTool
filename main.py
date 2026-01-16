@@ -63,6 +63,11 @@ def run_tool(session):
                 try:
                     ch = app.create_supergroup(f"{T}_{created+1}")
                     created += 1
+                    if SINGLE_MODE and created % GROUPS_BEFORE_WAIT == 0 and created < C:
+                        print(f"[{y}+{w}]{g} {created} groups created{l}")
+                        print()
+                        countdown(WAIT_TIME)
+                        print()
                     count_groups_and_wait(session, created)
 
                     for _ in range(10):
@@ -94,6 +99,7 @@ def run_tool(session):
 
 ## run all
 def run_all():
+    SINGLE_MODE = False
     global started_printed
     started_printed = False
     accs = list_accounts()
@@ -163,6 +169,7 @@ def menu():
                         acc = accs[idx]
                         print()
                         print(f"{y}▶ Running tool for {acc}{l}")
+                        SINGLE_MODE = True
                         run_tool(acc)
             except IndexError:
                 cptl("plz type correct number ")
