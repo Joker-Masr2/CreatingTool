@@ -44,7 +44,7 @@ b = "\033[1;94m"
 p = "\033[1;91m\033[3m"
 l = "\033[1;97m\033[0m"
 ##update
-__version__ = "2.9.3"
+__version__ = "2.9.4"
 REPO = "Joker-Masr2/CreatingTool"
 
 def fix_me():
