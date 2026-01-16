@@ -23,7 +23,6 @@ def countdown(seconds):
 #############
 fix_me() ###########
 #### RUN TOOL
-SINGLE_MODE = False
 progress = {}
 lock = threading.Lock()
 last_step = 0
@@ -64,11 +63,6 @@ def run_tool(session):
                 try:
                     ch = app.create_supergroup(f"{T}_{created+1}")
                     created += 1
-                    if SINGLE_MODE and created % GROUPS_BEFORE_WAIT == 0 and created < C:
-                        print(f"[{y}+{w}]{g} {created} groups created{l}")
-                        print()
-                        countdown(WAIT_TIME)
-                        print()
                     count_groups_and_wait(session, created)
 
                     for _ in range(10):
@@ -169,14 +163,12 @@ def menu():
                         acc = accs[idx]
                         print()
                         print(f"{y}▶ Running tool for {acc}{l}")
-                        SINGLE_MODE = True
                         run_tool(acc)
             except IndexError:
                 cptl("plz type correct number ")
                 time.sleep(2)
                 menu()
         elif c == "4":
-             SINGLE_MODE = False
              run_all()
         elif c == "5": delete_account()
         elif c == "6": count_groups()
