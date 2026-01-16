@@ -23,6 +23,7 @@ def countdown(seconds):
 #############
 fix_me() ###########
 #### RUN TOOL
+SINGLE_MODE = False
 progress = {}
 lock = threading.Lock()
 last_step = 0
@@ -99,7 +100,6 @@ def run_tool(session):
 
 ## run all
 def run_all():
-    SINGLE_MODE = False
     global started_printed
     started_printed = False
     accs = list_accounts()
@@ -175,7 +175,9 @@ def menu():
                 cptl("plz type correct number ")
                 time.sleep(2)
                 menu()
-        elif c == "4": run_all()
+        elif c == "4":
+             SINGLE_MODE = False
+             run_all()
         elif c == "5": delete_account()
         elif c == "6": count_groups()
         elif c == "7": break
