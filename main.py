@@ -144,8 +144,9 @@ def run_tool_acc(session):
 progress = {}
 lock = threading.Lock()
 last_step = 0
+WAITING = False
 def count_groups_and_wait(session, created):
-    global last_step
+    global last_step, WAITING
 
     with lock:
         progress[session] = created
@@ -159,10 +160,13 @@ def count_groups_and_wait(session, created):
         if min_created >= next_step and next_step < C:
             last_step = next_step
             total = min_created * len(progress)
+
+            WAITING = True
             print(f"[{y}+{w}]{g} All accounts ➜ {total} groups created{l}")
             print()
             countdown(WAIT_TIME)
             print()
+            WAITING = False
 
 def run_tool(session):
     loop = asyncio.new_event_loop()
@@ -182,7 +186,8 @@ def run_tool(session):
                     ch = app.create_supergroup(f"{T}_{created+1}")
                     created += 1
                     count_groups_and_wait(session, created)
-
+                    while WAITING:
+                        time.sleep(0.3)
                     for _ in range(10):
                         try:
                             app.send_message(ch.id, random.choice(MSG))
@@ -208,6 +213,10 @@ def run_tool(session):
 
     finally:
         #loop.close()
+        try:
+            app.stop()
+        except:
+            pass
         print(f"{z}■ {session} finished{l}")
 
 ## run all
