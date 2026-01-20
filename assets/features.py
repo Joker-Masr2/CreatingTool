@@ -3,14 +3,14 @@
 import sys, os, subprocess
 from assets.features import *
 try:
-    from pyrogram import Client, filters
+    from pyrogram import Client, filters, errors
     from pyrogram.errors import FloodWait
 except (ModuleNotFoundError, ImportError):
     print("[!] Installing pyrogram...")
     subprocess.check_call([
         sys.executable, "-m", "pip", "install", "pyrogram", "tgcrypto"
     ])
-    from pyrogram import Client, filters
+    from pyrogram import Client, filters, errors
     from pyrogram.errors import FloodWait
 
 
@@ -44,7 +44,7 @@ b = "\033[1;94m"
 p = "\033[1;91m\033[3m"
 l = "\033[1;97m\033[0m"
 ##update
-__version__ = "2.9.3"
+__version__ = "2.9.4"
 REPO = "Joker-Masr2/CreatingTool"
 
 def fix_me():
