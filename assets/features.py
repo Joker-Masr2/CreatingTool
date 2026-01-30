@@ -43,7 +43,7 @@ p = "\033[1;91m\033[3m"
 l = "\033[1;97m\033[0m"
 ##update
 
-__version__ = "2.9.6"
+__version__ = "3.0.0"
 REPO = "Joker-Masr2/CreatingTool"
 NAME = "assets/groups"
 epi= "assets/api"
