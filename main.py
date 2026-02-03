@@ -2,13 +2,20 @@
 from assets.features import *
 from assets.functions import *
 from assets.api import *
+import sys
+import os
 
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 # ============= sets ==================
-logos = ["assets/logos/1.jpg",
-    "assets/logos/2.jpg",
-    "assets/logos/3.jpg",
-    "assets/logos/4.jpg",
-    "assets/logos/5.jpg"
+logos = [
+    resource_path("assets/logos/1.jpg"),
+    resource_path("assets/logos/2.jpg"),
+    resource_path("assets/logos/3.jpg"),
+    resource_path("assets/logos/4.jpg"),
+    resource_path("assets/logos/5.jpg")
 ]
 lo = itertools.cycle(logos)
 sent = False
