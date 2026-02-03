@@ -41,10 +41,15 @@ def countdown(seconds):
         seconds -= 1
     print(f"\r{g} (⌒0⌒)／~~ Resuming work... {w} ")
 #### SYSTEM
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 SYSTEM = platform.system()
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TOOLS_DIR = os.path.join(BASE_DIR, "tools")
-SESS_DIR = os.path.join(BASE_DIR, "sessions")
+#SESS_DIR = os.path.join(BASE_DIR, "sessions")
+SESS_DIR = resource_path("assets/sessions")
 os.makedirs(SESS_DIR, exist_ok=True)
 started_printed = False
 start_lock = threading.Lock()
