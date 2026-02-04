@@ -1,33 +1,47 @@
-name: Build CreatingTool EXE
+name: Build & Release EXE
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - "v*"
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
           pip install -r requirements.txt
           pip install pyinstaller
 
       - name: Build EXE
-        run: pyinstaller --onefile --name CreatingTool --add-data "assets;assets" main.py
         shell: pwsh
+        run: |
+          pyinstaller `
+            --onefile `
+            --name CreatingTool `
+            --icon assets/logos/logo.ico `
+            --add-data "assets;assets" `
+            main.py
 
-      - name: Upload EXE
-        uses: actions/upload-artifact@v4
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: CreatingTool-Windows
-          path: dist/CreatingTool.exe
+          name: CreatingTool ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          files: |
+            dist/CreatingTool.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
