@@ -1,9 +1,9 @@
-# Imports
+# =============================== (゜-゜)(。_。) ================================
 from assets.features import *
 from assets.functions import *
 from assets.api import *
 
-# ============= sets ==================
+# ============================    Sets    ==================================
 logos = [
     resource_path("assets/logos/1.jpg"),
     resource_path("assets/logos/2.jpg"),
@@ -11,6 +11,7 @@ logos = [
     resource_path("assets/logos/4.jpg"),
     resource_path("assets/logos/5.jpg")
 ]
+
 lo = itertools.cycle(logos)
 sent = False
 sent_lock = threading.Lock()
@@ -18,10 +19,9 @@ progress = {}
 lock = threading.Lock()
 last_step = 0
 WAITING = False
-fix_me()
-down()
-atexit.register(cleanup)
-#### RUN TOOL ACC
+check_update()
+
+# =========================== Run for just one account ====================
 def run_tool_acc(session):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
@@ -38,7 +38,7 @@ def run_tool_acc(session):
             while created < C:
                 try:
                     logo = next(lo)
-                    ch = app.create_supergroup(f"{T}_{created+1}")
+                    ch = app.create_supergroup(f"{T}_{random_group_name(5)}")
                     time.sleep(random.uniform(2, 4))
                     app.set_chat_photo(chat_id=ch.id, photo=logo)
                     created += 1
@@ -74,7 +74,9 @@ def run_tool_acc(session):
 
     finally:
         print(f"{z}■ {session} finished (⌒0⌒)／~~{l}")
-#### Run tool
+
+# =========================== Run for all Accounts =====================
+
 def count_groups_and_wait(session, created):
     global last_step, WAITING
 
@@ -97,7 +99,7 @@ def count_groups_and_wait(session, created):
             countdown(WAIT_TIME)
             print()
             WAITING = False
-####
+
 def run_tool(session):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
@@ -121,7 +123,7 @@ def run_tool(session):
             while created < C:
                 try:
                     logo = next(lo)
-                    ch = app.create_supergroup(f"{T}_{created+1}")
+                    ch = app.create_supergroup(f"{T}_{random_group_name(5)}")
                     time.sleep(random.uniform(2, 4))
                     app.set_chat_photo(chat_id=ch.id, photo=logo)
                     created += 1
@@ -156,11 +158,11 @@ def run_tool(session):
             app.stop()
         except:
             pass
-#        loop.close()
+        loop.close()
         if session.lower() != "admin":
             print(f"{z}■ {session} finished (⌒0⌒)／~~{l}")
 
-## run all
+
 def run_all():
     global started_printed
     started_printed = False
@@ -192,7 +194,8 @@ def run_all():
     print(f"{g}All accounts finished their tasks (￣。￣){l}")
     time.sleep(2)
 
-## Menu
+# =============================   (*゜▽゜)_□   ========================
+
 def menu():
     theme()
     while True:
@@ -221,7 +224,7 @@ def menu():
             if not accs:
                 print(f"{r}no accounts{w}")
                 time.sleep(2)
-                menu()
+                continue
             try:
                 if admn in accs:
                     accs.remove("admin")
@@ -240,7 +243,7 @@ def menu():
             except IndexError:
                 cptl("plz type correct number ")
                 time.sleep(2)
-                menu()
+                continue
         elif c == "4": run_all()
         elif c == "5": delete_account()
         elif c == "6": count_groups()
@@ -249,7 +252,9 @@ def menu():
             print(love)
             time.sleep(2)
             main()
-#### START
+
+# ==========================  Start  ======================
+
 try:
     if __name__ == "__main__":
         menu()  
