@@ -2,6 +2,7 @@
 from assets.features import *
 from assets.functions import *
 from assets.api import *
+from pyrogram.errors import FloodWait
 # ============================    Sets    ==================================
 logos = [
     resource_path("assets/logos/1.jpg"),
