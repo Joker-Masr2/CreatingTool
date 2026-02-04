@@ -2,7 +2,6 @@
 from assets.features import *
 from assets.functions import *
 from assets.api import *
-
 # ============================    Sets    ==================================
 logos = [
     resource_path("assets/logos/1.jpg"),
