@@ -19,7 +19,7 @@ l = "\033[1;97m\033[0m"
 
 # ===================== My bad, sorry for this salad ＼(-_-) =================
 
-__version__ = "3.0.0"
+__version__ = "3.0.1"
 REPO = "Joker-Masr2/CreatingTool"
 UPDATE_DIR = "updates" 
 
