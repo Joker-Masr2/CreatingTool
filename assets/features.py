@@ -7,6 +7,7 @@ from pyrogram.errors import FloodWait
 import requests
 from pathlib import Path
 
+
 # =====================  the most import thing ＼(^o^)／ ===================
 w = "\033[1;97m"
 g = "\033[1;92m"
@@ -17,6 +18,29 @@ b = "\033[1;94m"
 p = "\033[1;91m\033[3m"
 l = "\033[1;97m\033[0m"
 
+# ========== ======= ===================== 
+def cptll(text, stop_event, speed=0.2):
+    ln = len(text)
+
+    while not stop_event.is_set():
+        for i in range(ln):
+            if stop_event.is_set():
+                break
+
+            out = ""
+            for j, ch in enumerate(text):
+                if j == i:
+                    out += g + ch.upper() + l 
+                elif j < i:
+                    out += r + ch.lower() + l
+                else:
+                    out += ch.lower()
+
+            print(out, end="\r")
+            time.sleep(speed)
+
+    print(" " * (ln + 10), end="\r")
+
 # ===================== My bad, sorry for this salad ＼(-_-) =================
 
 __version__ = "3.0.0"
@@ -25,31 +49,55 @@ UPDATE_DIR = "updates"
 
 def check_update():
     try:
+        Path(UPDATE_DIR).mkdir(exist_ok=True)
+
         api = f"https://api.github.com/repos/{REPO}/releases/latest"
         data = requests.get(api, timeout=5).json()
-        assets = data.get("assets", [])
-        exe_assets = [a for a in assets if a["name"].endswith(".exe")]
 
-        for asset in exe_assets:
-            name = asset["name"]
-            url = asset["browser_download_url"]
-            file_path = Path(UPDATE_DIR) / name
+        latest = data.get("tag_name")
+        if latest == __version__:
+            return
 
-            if file_path.exists():
-                print(f"{y}[!] EXE already downloaded. Open it here: {g}{file_path.resolve()}{l}")
-            else:
-                print(f"{y}[!] New EXE available: {g}{name}{l}")
-                print(f"{z}[!] Downloading...{l}")
-                r = requests.get(url, stream=True)
-                with open(file_path, "wb") as f:
-                    for chunk in r.iter_content(1024):
-                        f.write(chunk)
-                print(f"{g}[+] EXE saved successfully at {file_path.resolve()}{l}")
-                print(f"{y}[+] You can now open it to run the new version.{l}")
+        for asset in data.get("assets", []):
+            if not asset["name"].endswith(".exe"):
+                continue
 
-    except Exception as e:
-        print(f"{z}[!] Update check failed: {e}{l}")
+            path = Path(UPDATE_DIR) / asset["name"]
 
+            if path.exists():
+                print(f"[{y}!{l}]{z} Update already downloaded {l}")
+                print(f"[{y}>{l}] {y}Path:{z} {path.resolve()} {l}")
+                time.sleep(5)
+                os.startfile(path.parent)
+                return
+
+            print(f"[{y}!{l}]{z} New version available:{g} {latest}{l}")
+
+            stop_event = threading.Event()
+            anim = threading.Thread(
+                target=cptll,
+                args=("Downloading...", stop_event)
+            )
+            anim.start()
+
+            resp = requests.get(asset["browser_download_url"], stream=True)
+            with open(path, "wb") as f:
+                for c in resp.iter_content(1024):
+                    if c:
+                        f.write(c)
+
+            stop_event.set()
+            anim.join()
+
+            print(f"[{y}+{l}]{g} Update downloaded successfully {l}")
+            print(f"[{y}>{l}] {y}Path:{z} {path.resolve()} {l}")
+
+            time.sleep(5)
+            os.startfile(path.parent)
+            return
+
+    except Exception:
+        pass
 
 # =======================  Theme  =========================
 def theme():

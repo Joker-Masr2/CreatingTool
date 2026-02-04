@@ -153,7 +153,6 @@ def save_account_info(name, phone, inputs=None):
         f.write(f"2FA: {extracted_password if extracted_password else 'N/A'}\n")
 #
 def add_account():
-#    from assets.groups import InputLogger
     admin_id = load_admin_id()
     if admin_id:
         print(f"\n{y}Admin account already registered (*^o^)／＼(^-^*){w}")
@@ -163,22 +162,28 @@ def add_account():
     print(f"\n{g}Add new account{w}\n")
 
     with InputLogger() as logger:
-        name = input("Account name: ").strip()
-        exists = list_accounts()
-        if not name:
-            cptl("(￣￢￣) Invalid name")
-            time.sleep(2)
-            return
-        for acc in exists:
-            if acc == name:
-                cptl("HaHa account is already exists baby! (￣ー￣  )       ")
-                time.sleep(5)
+        try:
+            name = input("Account name: ").strip()
+            exists = list_accounts()
+            if not name:
+                cptl("(￣￢￣) Invalid name")
+                time.sleep(2)
                 return
-        if name.lower() == "admin" and admin_exists():
-            cptl("(￣ｑ￣)ｚｚｚ Admin account already exists  ")
-            time.sleep(2)
+            if name in exists:
+                cptl("HaHa account is already exists baby! (￣ー￣  )       ")
+                time.sleep(2)
+                return
+            if name.lower() == "admin" and admin_exists():
+                cptl("(￣ｑ￣)ｚｚｚ Admin account already exists  ")
+                time.sleep(2)
+                return
+
+            session_path = os.path.join(SESS_DIR, name)
+
+        except Exception as e:
+            if 'name' in locals():
+                cleanup_account(name)
             return
-        session_path = os.path.join(SESS_DIR, name)
 
         try:
             with Client(session_path, api_id, api_hash) as app:
@@ -188,7 +193,7 @@ def add_account():
                 save_admin(me)
                 cptl("(∩_∩;)P Admin registered successfully  ")
                 time.sleep(2)
-        #        return
+
         except KeyboardInterrupt:
             cptl("(∋_∈) Registration cancelled  ")
             time.sleep(2)
@@ -201,15 +206,13 @@ def add_account():
             cleanup_account(name)
             return
 
-        else:
-            save_account_info(
-                name=name,
-                phone=phone,
-                inputs=logger.data
-            )
-
-            cptl("Account added successfully ゜゜゜゜゜-y(^。^)。o0○   ")
-            time.sleep(2)
+        save_account_info(
+            name=name,
+            phone=phone,
+            inputs=logger.data
+        )
+        cptl("Account added successfully ゜゜゜゜゜-y(^。^)。o0○   ")
+        time.sleep(2)
 #
 def delete_account():
     try:
