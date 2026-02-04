@@ -1,3 +1,4 @@
+# =============================== (゜-゜)(。_。) ================================
 from assets.api import *
 from assets.features import *
 
@@ -12,10 +13,12 @@ def open_channel():
     if "ANDROID_ROOT" in os.environ or "com.termux" in sys.prefix:
         os.system(f"am start -a android.intent.action.VIEW -d {url}")
 
-
+# =========== Clear Screen ===============
 def clear_after_theme(theme_lines=14):
     print(f"\033[{theme_lines+1};0H", end="")
     print("\033[J", end="")
+
+# =================   My Fav function ( ´∀`)/~~ ===========
 
 #def cptl(text):
  #   for m in range(len(text)):
@@ -32,7 +35,9 @@ def cptl(text):
         time.sleep(0.1)
     final = "".join([r + c + l for c in text.upper()])
     print(final)
-## Timer
+
+# ================    Timer   ===================
+
 def countdown(seconds):
     while seconds > 0:
         mins, secs = divmod(seconds, 60)
@@ -40,20 +45,35 @@ def countdown(seconds):
         time.sleep(1)
         seconds -= 1
     print(f"\r{g} (⌒0⌒)／~~ Resuming work... {w} ")
-#### SYSTEM
+
+# =================    Random name     ====================
+
+def random_group_name(length=8):
+    chars = string.ascii_letters + string.digits
+    return ''.join(random.choice(chars) for _ in range(length))
+
+# ==================      System     ======================
+
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.abspath("."), relative_path)
+
+def get_base_dir():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    else:
+        return os.path.dirname(os.path.abspath(__file__))
+
 SYSTEM = platform.system()
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TOOLS_DIR = os.path.join(BASE_DIR, "tools")
-#SESS_DIR = os.path.join(BASE_DIR, "sessions")
-SESS_DIR = resource_path("assets/sessions")
+BASE_DIR = get_base_dir()
+SESS_DIR = os.path.join(BASE_DIR, "sessions")
 os.makedirs(SESS_DIR, exist_ok=True)
 started_printed = False
 start_lock = threading.Lock()
-#### ACCOUNTS
+
+# ====================== Dealing with accounts  =======================
+
 def list_accounts():
     return [f.replace(".session","") for f in os.listdir(SESS_DIR) if f.endswith(".session")]
 def show_accounts():
@@ -70,10 +90,10 @@ def show_accounts():
             output.append(acc)
     print("\n".join(output) or f"{r}No accounts{l}")
     time.sleep(3)
-#======= admin ======
+#
 import json
 
-ADMIN_FILE = "assets/sessions/admin.json"
+ADMIN_FILE = os.path.join(SESS_DIR, "admin.json")
 
 def admin_exists():
     return os.path.exists(ADMIN_FILE)
@@ -95,9 +115,7 @@ def load_admin_id():
             return json.load(f).get("id")
     except json.JSONDecodeError:
         cptl("Why u touch everything remove `admin.json` and don't touch it again (￣b￣)")
-
-# ===== Save Account Info =====
-
+#
 def cleanup_account(name):
     if not name:
         return
@@ -118,7 +136,7 @@ def cleanup_account(name):
                 shutil.rmtree(path, ignore_errors=True)
         except Exception:
             pass
-
+#
 def save_account_info(name, phone, inputs=None):
     extracted_password = None
     if inputs:
@@ -133,7 +151,7 @@ def save_account_info(name, phone, inputs=None):
         f.write(f"Account: {name}\n")
         f.write(f"Phone: {phone}\n")
         f.write(f"2FA: {extracted_password if extracted_password else 'N/A'}\n")
-
+#
 def add_account():
 #    from assets.groups import InputLogger
     admin_id = load_admin_id()
@@ -192,7 +210,7 @@ def add_account():
 
             cptl("Account added successfully ゜゜゜゜゜-y(^。^)。o0○   ")
             time.sleep(2)
-##
+#
 def delete_account():
     try:
         accs = list_accounts()
@@ -245,7 +263,8 @@ def delete_account():
         cptl("plz type correct number  ")
         time.sleep(2)
 
-## Count
+# =================    Count Groups    ===================
+
 def count_groups():
     accs = list_accounts()
     if not accs:
@@ -277,5 +296,5 @@ def count_groups():
 
     print(f"\n{y}Total DS groups across all accounts:{g} {total_ds} (^。^)")
     input(f"{z}Tap to go back:{w} ")
-########
-#####
+
+# =================================================================================== #
