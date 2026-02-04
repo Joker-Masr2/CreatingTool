@@ -54,7 +54,7 @@ def check_update():
         api = f"https://api.github.com/repos/{REPO}/releases/latest"
         data = requests.get(api, timeout=5).json()
 
-        latest = data.get("tag_name")
+        latest = data["tag_name"].lstrip("v")
         if latest == __version__:
             return
 
