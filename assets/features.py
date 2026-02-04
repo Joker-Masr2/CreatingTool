@@ -6,7 +6,7 @@ from pyrogram import Client, filters
 from pyrogram.errors import FloodWait
 import requests
 from pathlib import Path
-
+from pyrogram import errors
 
 # =====================  the most import thing ＼(^o^)／ ===================
 w = "\033[1;97m"
