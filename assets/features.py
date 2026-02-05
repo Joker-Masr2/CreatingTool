@@ -44,7 +44,7 @@ l = "\033[1;97m\033[0m"
 
 # ===================== My bad, sorry for this salad ＼(-_-) =================
 
-__version__ = "2.6.1"
+__version__ = "2.6.2"
 REPO = "Joker-Masr2/CreatingTool"
 NAME = "assets/groups"
 epi= "assets/api"
