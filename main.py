@@ -2,16 +2,14 @@
 from assets.features import *
 from assets.functions import *
 from assets.api import *
-from pyrogram.errors import FloodWait
-# ============================    Sets    ==================================
-logos = [
-    resource_path("assets/logos/1.jpg"),
-    resource_path("assets/logos/2.jpg"),
-    resource_path("assets/logos/3.jpg"),
-    resource_path("assets/logos/4.jpg"),
-    resource_path("assets/logos/5.jpg")
-]
 
+# ============================    Sets    ==================================
+logos = ["assets/logos/1.jpg",
+    "assets/logos/2.jpg",
+    "assets/logos/3.jpg",
+    "assets/logos/4.jpg",
+    "assets/logos/5.jpg"
+]
 lo = itertools.cycle(logos)
 sent = False
 sent_lock = threading.Lock()
@@ -19,7 +17,9 @@ progress = {}
 lock = threading.Lock()
 last_step = 0
 WAITING = False
-check_update()
+fix_me()
+down()
+atexit.register(cleanup)
 
 # =========================== Run for just one account ====================
 def run_tool_acc(session):
@@ -158,7 +158,7 @@ def run_tool(session):
             app.stop()
         except:
             pass
-        loop.close()
+#        loop.close()
         if session.lower() != "admin":
             print(f"{z}■ {session} finished (⌒0⌒)／~~{l}")
 
@@ -224,7 +224,7 @@ def menu():
             if not accs:
                 print(f"{r}no accounts{w}")
                 time.sleep(2)
-                continue
+                menu()
             try:
                 if admn in accs:
                     accs.remove("admin")
@@ -243,7 +243,7 @@ def menu():
             except IndexError:
                 cptl("plz type correct number ")
                 time.sleep(2)
-                continue
+                menu()
         elif c == "4": run_all()
         elif c == "5": delete_account()
         elif c == "6": count_groups()
