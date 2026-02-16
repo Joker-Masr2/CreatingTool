@@ -71,7 +71,7 @@ def cptl(text):
     print(final)
 # ===================== My bad, sorry for this salad ＼(-_-) =================
 
-__version__ = "2.6.2"
+__version__ = "2.6.3"
 REPO = "Joker-Masr2/CreatingTool"
 def fix_me():
     try:
