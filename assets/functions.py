@@ -1,50 +1,98 @@
 # =============================== (゜-゜)(。_。) ================================
-from assets.api import *
+from lib.down import *
 from assets.features import *
-
 def open_channel():
-    url = "https://t.me/creatingtool"
-    cptl("📢 Openning Channel to Explain...")
-    time.sleep(3)
+    url= "https://t.me/creatingtool"
     try:
-        webbrowser.open(url)
+        if os.name == "nt":
+            subprocess.run(["cmd", "/c", "start", url])
+        elif "ANDROID_ROOT" in os.environ:
+            subprocess.run([
+                "am", "start",
+                "-a", "android.intent.action.VIEW",
+                "-d", url
+            ])
+        else:
+            subprocess.run(["xdg-open", url])
     except:
-        pass
-    if "ANDROID_ROOT" in os.environ or "com.termux" in sys.prefix:
-        os.system(f"am start -a android.intent.action.VIEW -d {url}")
-
+        print(f"{z}plz open: {y}https://t.me/creatingtool")
+        time.sleep(4)
 # =========== Clear Screen ===============
 def clear_after_theme(theme_lines=14):
-    print(f"\033[{theme_lines+1};0H", end="")
-    print("\033[J", end="")
+    sys.stdout.write(f"\033[{theme_lines + 1};1H\033[0J")
+    sys.stdout.flush()
 
-# =================   My Fav function ( ´∀`)/~~ ===========
+# ======== working ======
+running = False
+print_lock = threading.Lock()
 
-#def cptl(text):
- #   for m in range(len(text)):
-  #      print(p + text[:m].upper() + l, end="\r")
-   #     time.sleep(.1)
-    #print()
+def clear_line():
+    cols = shutil.get_terminal_size().columns
+    sys.stdout.write("\r" + " " * cols + "\r")
 
-def cptl(text):
-    for m in range(len(text)):
-        prev = text[:m].upper()
-        colored_prev = "".join([r + c + l for c in prev])
-        current = g + text[m] + l
-        print(colored_prev + current, end="\r")
-        time.sleep(0.1)
-    final = "".join([r + c + l for c in text.upper()])
-    print(final)
+def safe_print(*args, **kwargs):
+    with print_lock:
+        clear_line()
+        print(*args, **kwargs)
+
+def working_animation(speed=0.5):
+    word = "working..."
+    i = 0
+
+    while running:
+        if print_lock.locked():
+            time.sleep(0.05)
+            continue
+
+        with print_lock:
+            letters = []
+            for idx, c in enumerate(word):
+                if idx == i:
+                    letters.append(f"{r}{c.upper()}{l}")
+                else:
+                    letters.append(f"{y}{c.lower()}{l}")
+
+            sys.stdout.write("\r" + "".join(letters))
+            sys.stdout.flush()
+
+        i = (i + 1) % len(word)
+        time.sleep(speed)
+
+    with print_lock:
+        clear_line()
+
+def start_working():
+    global running
+    running = True
+    threading.Thread(target=working_animation, daemon=True).start()
+
+def stop_working():
+    global running
+    running = False
 
 # ================    Timer   ===================
 
+#def countdown(seconds):
+ #   while seconds > 0:
+  #      mins, secs = divmod(seconds, 60)
+   #     print(f"\r{y}Waiting:{z} {mins:02d}:{secs:02d} {y}(￣ｑ￣)ｚｚｚ", end="")
+    #    time.sleep(1)
+     #   seconds -= 1
+#    print(f"\r{g} (⌒0⌒)／~~ Resuming work... {w} ")
+
 def countdown(seconds):
-    while seconds > 0:
-        mins, secs = divmod(seconds, 60)
-        print(f"\r{y}Waiting:{z} {mins:02d}:{secs:02d} {y}(￣ｑ￣)ｚｚｚ", end="")
-        time.sleep(1)
-        seconds -= 1
-    print(f"\r{g} (⌒0⌒)／~~ Resuming work... {w} ")
+    with Progress(transient=True) as progress:
+        task = progress.add_task(f"{y}Waiting:{z} (￣ｑ￣)ｚｚｚ", total=seconds)
+        while not progress.finished:
+            mins, secs = divmod(seconds, 60)
+            progress.update(
+                task,
+                description=f"{y}Waiting:{z} {mins:02d}:{secs:02d} {y}(￣ｑ￣)ｚｚｚ",
+                advance=1
+            )
+            time.sleep(1)
+            seconds -= 1
+    console.print("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",style="green")
 
 # =================    Random name     ====================
 
@@ -56,7 +104,6 @@ def random_group_name(length=8):
 
 SYSTEM = platform.system()
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TOOLS_DIR = os.path.join(BASE_DIR, "tools")
 SESS_DIR = os.path.join(BASE_DIR, "sessions")
 os.makedirs(SESS_DIR, exist_ok=True)
 started_printed = False
@@ -72,13 +119,15 @@ def show_accounts():
     if pined in accounts:
         accounts = [pined] + [a for a in accounts if a != pined]
 
-    output = []
+    tree = Tree("🌩️ [bold magenta]ACCOUNTS[/bold magenta]")
+
     for acc in accounts:
         if acc == pined:
-            output.append(f"{y}■ Admin Exist (⌒∇⌒)ノ{l}\n")
+            tree.add(f"{y}■ Admin Exist (⌒∇⌒)ノ{l}")
         else:
-            output.append(acc)
-    print("\n".join(output) or f"{r}No accounts{l}")
+            tree.add(acc)
+
+    console.print(tree)
     time.sleep(3)
 #
 import json
@@ -143,7 +192,12 @@ def save_account_info(name, phone, inputs=None):
         f.write(f"2FA: {extracted_password if extracted_password else 'N/A'}\n")
 #
 def add_account():
-#    from assets.groups import InputLogger
+    exists = []
+    username = get_current_user()
+    if not username:
+        cptl("⚠ No logged-in user found")
+        return
+
     admin_id = load_admin_id()
     if admin_id:
         print(f"\n{y}Admin account already registered (*^o^)／＼(^-^*){w}")
@@ -153,34 +207,48 @@ def add_account():
     print(f"\n{g}Add new account{w}\n")
 
     with InputLogger() as logger:
-        name = input("Account name: ").strip()
-        exists = list_accounts()
+        try:
+            name = input("Account name: ").strip()
+        except KeyboardInterrupt:
+            return
+
         if not name:
             cptl("(￣￢￣) Invalid name")
             time.sleep(2)
             return
-        for acc in exists:
-            if acc == name:
-                cptl("HaHa account is already exists baby! (￣ー￣  )       ")
-                time.sleep(5)
-                return
-        if name.lower() == "admin" and admin_exists():
-            cptl("(￣ｑ￣)ｚｚｚ Admin account already exists  ")
+
+        ok, reason = add_account_and(username, increment=False)
+        if not ok:
+            cptl(f"(╥﹏╥) {reason}")
             time.sleep(2)
             return
+
+        exists = list_accounts()
+        for acc in exists:
+            if acc == name:
+                cptl("HaHa account already exists baby! (￣ー￣  )")
+                time.sleep(5)
+                return
+
+        if name.lower() == "admin" and admin_exists():
+            cptl("(￣ｑ￣)ｚｚｚ Admin account already exists")
+            time.sleep(2)
+            return
+
         session_path = os.path.join(SESS_DIR, name)
 
         try:
             with Client(session_path, api_id, api_hash) as app:
                 me = app.get_me()
                 phone = me.phone_number or "Unknown"
+
             if name.lower() == "admin":
                 save_admin(me)
-                cptl("(∩_∩;)P Admin registered successfully  ")
+                console.print("(∩_∩;)P Admin registered successfully", style="green")
                 time.sleep(2)
-        #        return
+
         except KeyboardInterrupt:
-            cptl("(∋_∈) Registration cancelled  ")
+            cptl("(∋_∈) Registration cancelled")
             time.sleep(2)
             cleanup_account(name)
             return
@@ -191,15 +259,21 @@ def add_account():
             cleanup_account(name)
             return
 
-        else:
-            save_account_info(
-                name=name,
-                phone=phone,
-                inputs=logger.data
-            )
-
-            cptl("Account added successfully ゜゜゜゜゜-y(^。^)。o0○   ")
+        ok, reason = add_account_and(username, increment=True)
+        if not ok:
+            cleanup_account(name)
+            cptl(f"(╥﹏╥) {reason}")
             time.sleep(2)
+            return
+
+        save_account_info(
+            name=name,
+            phone=phone,
+            inputs=logger.data
+        )
+
+        console.print("Account added successfully ゜゜゜゜゜(^。^)。o0○", style="green")
+        time.sleep(2)
 #
 def delete_account():
     try:
@@ -208,10 +282,10 @@ def delete_account():
             print(f"{r}No accounts{w}")
             time.sleep(2)
             return
-        print(f"{y}Accounts:{w}\n")
+        tree = Tree("🌩️ [bold magenta]ACCOUNTS[/bold magenta]")
         for i, a in enumerate(accs, 1):
-            print(f"{i}){r} {a}{l}" if a == "admin" else f"{i}) {a}")
-
+            tree.add(f"{i}){r} {a}{l}" if a == "admin" else f"{i}) {a}")
+        console.print(tree)
         print(f"\n{z}Choose number | {r}0{z} = Delete ALL | {r}Tap{z} to go back{w}")
         ch = input("> ").strip()
 
@@ -228,7 +302,7 @@ def delete_account():
             shutil.rmtree(SESS_DIR, ignore_errors=True)
             os.makedirs(SESS_DIR, exist_ok=True)
 
-            cptl(f"All accounts deleted ♪ヽ(´▽｀)/  ")
+            console.print(f"All accounts deleted ♪ヽ(´▽｀)/  ",style="green")
             time.sleep(2)
             return
 
@@ -243,7 +317,7 @@ def delete_account():
                 removed = True
 
         if removed:
-            cptl(f"Deleted {acc} φ(゜゜)ノ゜  ")
+            console.print(f"Deleted {acc} φ(゜゜)ノ゜  ",style="green")
         else:
             cptl(f"Nothing to delete for(-.-)Zzz・・・・ {acc}   ")
 
@@ -254,37 +328,53 @@ def delete_account():
         time.sleep(2)
 
 # =================    Count Groups    ===================
-
 def count_groups():
     accs = list_accounts()
     if not accs:
-        print()
-        cptl("No accounts founded σ(^_^;)?   ")
+        console.print("\n[bold red]No accounts founded σ(^_^;)?[/bold red]")
         return
-
-    total_ds = 0
     print()
+    console.print("Searching...",style="yellow")
+    print()
+    total_ds = 0
+    tree = Tree("🌩️ [bold magenta]DS Groups Scanner[/bold magenta]")
+
     for acc in accs:
+        if acc == "admin":
+            continue
+
         try:
-            if acc =="admin":
-                continue
             app = Client(os.path.join(SESS_DIR, acc), api_id, api_hash)
             with app:
                 dialogs = app.get_dialogs()
                 ds_groups = [
                     d.chat.id
                     for d in dialogs
-                    if getattr(d.chat, "title", None) and d.chat.title.startswith("DS")
+                    if getattr(d.chat, "title", None)
+                    and d.chat.title.startswith("DS")
                 ]
-                cptl(f"{acc}: {len(ds_groups)} groups found ")
-                total_ds += len(ds_groups)
+
+                count = len(ds_groups)
+                total_ds += count
+
+                acc_branch = tree.add(f"👤 [cyan]{acc}[/cyan]")
+
+                acc_branch.add(f"📂 Groups Found: [bold green]{count}[/bold green]")
+
         except FloodWait as e:
-            print(f"{acc} FloodWait {e.value}s")
+            tree.add(f"[red]{acc} → FloodWait {e.value}s[/red]")
             time.sleep(e.value)
-        except Exception as e:	
-            print(f"Error loading account {acc}: {e}")
 
-    print(f"\n{y}Total DS groups across all accounts:{g} {total_ds} (^。^)")
-    input(f"{z}Tap to go back:{w} ")
+        except Exception as e:
+            tree.add(f"[red]Error loading {acc}: {e}[/red]")
 
+    console.print()
+    console.print(tree)
+
+    console.print(
+        f"\n[yellow]Total DS groups across all accounts:[/yellow] "
+        f"[bold green]{total_ds}[/bold green] (^。^)"
+    )
+
+    console.input("[magenta]Tap to go back:[/magenta] ")
 # =================================================================================== #
