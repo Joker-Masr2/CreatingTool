@@ -1,4 +1,7 @@
-![Tool Screenshot](/assets/banner.jpg)
+<p align="center">
+  <img src="assets/logo.gif" width="600">
+</p>
+
 # CreatingTool - Telegram Automation Tool
 
 **Version:** 2.3 
