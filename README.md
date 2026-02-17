@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.gif" width="600">
+  <img src="assets/logo.gif" width="800">
 </p>
 
 # CreatingTool - Telegram Automation Tool
