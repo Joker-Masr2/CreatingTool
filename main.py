@@ -1,7 +1,7 @@
 # =============================== (゜-゜)(。_。) ================================
 from assets.features import *
 from assets.functions import *
-# ============================    Sets    ==================================
+
 logos = ["assets/logos/1.jpg",
     "assets/logos/2.jpg",
     "assets/logos/3.jpg",
